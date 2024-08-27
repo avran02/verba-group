@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+  title: To-Do List API
+  version: 1.0.0
+  description: REST API для управления задачами (To-Do List)
+  
+servers:
+  - url: http://localhost:3000
+    description: Локальный сервер
+
+paths:
+  /tasks:
+    post:
+      summary: Создать новую задачу
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - description
+                - due_date
+              properties:
+                title:
+                  type: string
+                  description: Название задачи
+                description:
+                  type: string
+                  description: Описание задачи
+                due_date:
+                  type: string
+                  format: date-time
+                  description: Дата и время выполнения задачи (RFC3339)
+      responses:
+        '201':
+          description: Задача успешно создана
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID задачи
+                  title:
+                    type: string
+                    description: Название задачи
+                  description:
+                    type: string
+                    description: Описание задачи
+                  due_date:
+                    type: string
+                    format: date-time
+                    description: Дата выполнения задачи
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Дата создания задачи
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Дата обновления задачи
+        '400':
+          description: Неправильный формат данных
+        '500':
+          description: Проблема на сервере
+
+    get:
+      summary: Получить список всех задач
+      responses:
+        '200':
+          description: Список всех задач
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ID задачи
+                    title:
+                      type: string
+                      description: Название задачи
+                    description:
+                      type: string
+                      description: Описание задачи
+                    due_date:
+                      type: string
+                      format: date-time
+                      description: Дата выполнения задачи
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: Дата создания задачи
+                    updated_at:
+                      type: string
+                      format: date-time
+                      description: Дата обновления задачи
+        '500':
+          description: Проблема на сервере
+
+  /tasks/{id}:
+    get:
+      summary: Получить задачу по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID задачи
+      responses:
+        '200':
+          description: Задача найдена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID задачи
+                  title:
+                    type: string
+                    description: Название задачи
+                  description:
+                    type: string
+                    description: Описание задачи
+                  due_date:
+                    type: string
+                    format: date-time
+                    description: Дата выполнения задачи
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Дата создания задачи
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Дата обновления задачи
+        '404':
+          description: Задача не найдена
+        '500':
+          description: Проблема на сервере
+
+    put:
+      summary: Обновить задачу по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID задачи
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - description
+                - due_date
+              properties:
+                title:
+                  type: string
+                  description: Название задачи
+                description:
+                  type: string
+                  description: Описание задачи
+                due_date:
+                  type: string
+                  format: date-time
+                  description: Дата и время выполнения задачи (RFC3339)
+      responses:
+        '200':
+          description: Задача успешно обновлена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID задачи
+                  title:
+                    type: string
+                    description: Название задачи
+                  description:
+                    type: string
+                    description: Описание задачи
+                  due_date:
+                    type: string
+                    format: date-time
+                    description: Дата выполнения задачи
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Дата создания задачи
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Дата обновления задачи
+        '400':
+          description: Неправильный формат данных
+        '404':
+          description: Задача не найдена
+        '500':
+          description: Проблема на сервере
+
+    delete:
+      summary: Удалить задачу по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID задачи
+      responses:
+        '204':
+          description: Задача успешно удалена
+        '404':
+          description: Задача не найдена
+        '500':
+          description: Проблема на сервере
